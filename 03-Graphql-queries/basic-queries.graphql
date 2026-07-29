@@ -1,0 +1,141 @@
+# ===========================================
+# GraphQL Basic Queries
+# ===========================================
+
+# -------------------------------------------
+# 1. Simple Query
+# -------------------------------------------
+
+query {
+  accounts {
+    id
+    name
+  }
+}
+
+# -------------------------------------------
+# 2. Query with Operation Name
+# -------------------------------------------
+
+query GetAccounts {
+  accounts {
+    id
+    name
+    industry
+  }
+}
+
+# -------------------------------------------
+# 3. Query with Arguments
+# -------------------------------------------
+
+query {
+  account(id: "001") {
+    id
+    name
+    industry
+  }
+}
+
+# -------------------------------------------
+# 4. Query Using Variables
+# -------------------------------------------
+
+query GetAccount($id: ID!) {
+  account(id: $id) {
+    id
+    name
+    phone
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001"
+# }
+
+# -------------------------------------------
+# 5. Nested Query
+# -------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+    owner {
+      name
+      email
+    }
+  }
+}
+
+# -------------------------------------------
+# 6. Multiple Root Fields
+# -------------------------------------------
+
+query {
+  accounts {
+    name
+  }
+
+  contacts {
+    firstName
+    lastName
+  }
+}
+
+# -------------------------------------------
+# 7. Aliases
+# -------------------------------------------
+
+query {
+  firstAccount: account(id: "001") {
+    name
+  }
+
+  secondAccount: account(id: "002") {
+    name
+  }
+}
+
+# -------------------------------------------
+# 8. Fragment
+# -------------------------------------------
+
+fragment CompanyFields on Company {
+  name
+  industry
+  phone
+}
+
+query {
+  account(id: "001") {
+    ...CompanyFields
+  }
+}
+
+# -------------------------------------------
+# 9. Directive
+# -------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+    phone @include(if: true)
+  }
+}
+
+# -------------------------------------------
+# 10. Pagination
+# -------------------------------------------
+
+query {
+  accounts(first: 10) {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
