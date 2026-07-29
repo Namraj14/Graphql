@@ -1,0 +1,191 @@
+# =====================================================
+# Salesforce GraphQL - Account Queries
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Get First 10 Accounts
+# -----------------------------------------------------
+
+query {
+
+  uiapi {
+
+    query {
+
+      Account(first: 10) {
+
+        edges {
+
+          node {
+
+            Id
+
+            Name {
+              value
+            }
+
+            Industry {
+              value
+            }
+          }
+        }
+
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 2. Account By Id
+# -----------------------------------------------------
+
+query GetAccount($id: ID!) {
+
+  uiapi {
+
+    query {
+
+      Account(
+        where: {
+          Id: { eq: $id }
+        }
+      ) {
+
+        edges {
+
+          node {
+
+            Id
+
+            Name {
+              value
+            }
+
+            Industry {
+              value
+            }
+
+            Phone {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "id":"001XXXXXXXXXXXX"
+# }
+
+# -----------------------------------------------------
+# 3. Filter Accounts
+# -----------------------------------------------------
+
+query {
+
+  uiapi {
+
+    query {
+
+      Account(
+        where:{
+          Industry:{
+            eq:"Technology"
+          }
+        }
+      ){
+
+        edges{
+
+          node{
+
+            Id
+
+            Name{
+              value
+            }
+
+            Industry{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 4. Sort Accounts
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Account(
+
+        orderBy:{
+          Name:{
+            order:ASC
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 5. Account Owner
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Account(first:5){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+
+            Owner{
+
+              Name{
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
