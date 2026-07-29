@@ -1,0 +1,73 @@
+# =====================================================
+# Related Records
+# =====================================================
+
+query GetAccountDetails($accountId: ID!) {
+
+  account(id: $accountId) {
+
+    id
+
+    name
+
+    industry
+
+    owner {
+
+      id
+
+      name
+
+      email
+
+    }
+
+    contacts {
+
+      id
+
+      firstName
+
+      lastName
+
+      email
+
+      phone
+
+    }
+
+    opportunities {
+
+      id
+
+      name
+
+      amount
+
+      stage
+
+      closeDate
+
+    }
+
+    cases {
+
+      id
+
+      subject
+
+      status
+
+      priority
+
+    }
+
+  }
+
+}
+
+# Variables
+#
+# {
+#   "accountId": "001XXXXXXXXXXXX"
+# }
