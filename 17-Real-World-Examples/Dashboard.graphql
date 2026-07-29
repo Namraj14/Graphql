@@ -1,0 +1,71 @@
+# =====================================================
+# Executive Dashboard
+# =====================================================
+
+query DashboardData {
+
+  accounts(first: 5) {
+
+    edges {
+
+      node {
+
+        id
+
+        name
+
+        industry
+      }
+    }
+  }
+
+  opportunities(first: 5) {
+
+    edges {
+
+      node {
+
+        id
+
+        name
+
+        amount
+
+        stage
+      }
+    }
+  }
+
+  cases(first: 5) {
+
+    edges {
+
+      node {
+
+        id
+
+        subject
+
+        status
+
+        priority
+      }
+    }
+  }
+
+  users(first: 5) {
+
+    edges {
+
+      node {
+
+        id
+
+        name
+
+        email
+      }
+    }
+  }
+
+}
