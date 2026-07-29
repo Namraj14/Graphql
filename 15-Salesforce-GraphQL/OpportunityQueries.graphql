@@ -1,0 +1,212 @@
+# =====================================================
+# Salesforce GraphQL - Opportunity Queries
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Get Opportunities
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Opportunity(first:10){
+
+        edges{
+
+          node{
+
+            Id
+
+            Name{
+              value
+            }
+
+            Amount{
+              value
+            }
+
+            StageName{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 2. Opportunities by Stage
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Opportunity(
+
+        where:{
+          StageName:{
+            eq:"Prospecting"
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+
+            Amount{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 3. Opportunity with Account
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Opportunity(first:5){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+
+            Amount{
+              value
+            }
+
+            Account{
+
+              Name{
+                value
+              }
+
+              Industry{
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 4. Opportunities Ordered by Amount
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Opportunity(
+
+        orderBy:{
+          Amount:{
+            order:DESC
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+
+            Amount{
+              value
+            }
+
+            StageName{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 5. Opportunity by Id
+# -----------------------------------------------------
+
+query GetOpportunity($id:ID!){
+
+  uiapi{
+
+    query{
+
+      Opportunity(
+
+        where:{
+          Id:{
+            eq:$id
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            Name{
+              value
+            }
+
+            Amount{
+              value
+            }
+
+            CloseDate{
+              value
+            }
+
+            StageName{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "id":"006XXXXXXXXXXXX"
+# }
