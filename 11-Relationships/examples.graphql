@@ -1,0 +1,225 @@
+# =====================================================
+# GraphQL Relationships Examples
+# =====================================================
+
+# -----------------------------------------------------
+# 1. One-to-One Relationship
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+
+    owner {
+      name
+      email
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 2. One-to-Many Relationship
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+
+    contacts {
+      firstName
+      lastName
+      email
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 3. Child-to-Parent Relationship
+# -----------------------------------------------------
+
+query {
+  contact(id: "100") {
+    firstName
+    lastName
+
+    account {
+      id
+      name
+      industry
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 4. Nested Relationships
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+
+    owner {
+
+      manager {
+
+        department {
+
+          name
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 5. Many-to-Many Relationship
+# -----------------------------------------------------
+
+query {
+  student(id: "S101") {
+
+    name
+
+    courses {
+      id
+      name
+
+      instructor {
+        name
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 6. Self Relationship
+# -----------------------------------------------------
+
+query {
+  employee(id: "E100") {
+
+    name
+
+    manager {
+
+      name
+
+      manager {
+        name
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 7. Parent with Multiple Child Collections
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+
+    name
+
+    contacts {
+      firstName
+      email
+    }
+
+    opportunities {
+      name
+      amount
+      stage
+    }
+
+    cases {
+      subject
+      status
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 8. Pagination on Child Relationship
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+
+    name
+
+    contacts(first: 5) {
+      firstName
+      email
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 9. Salesforce Example
+# -----------------------------------------------------
+
+query GetAccountDetails($id: ID!) {
+
+  account(id: $id) {
+
+    id
+    name
+    industry
+
+    owner {
+      id
+      name
+      email
+    }
+
+    contacts {
+      id
+      firstName
+      lastName
+      email
+    }
+
+    opportunities {
+      id
+      name
+      amount
+      stage
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001XXXXXXXXXXXX"
+# }
+
+# -----------------------------------------------------
+# 10. Complex Relationship Query
+# -----------------------------------------------------
+
+query {
+
+  company(id: "C100") {
+
+    name
+
+    departments {
+
+      name
+
+      employees {
+
+        name
+
+        manager {
+          name
+        }
+
+        projects {
+          name
+          budget
+        }
+      }
+    }
+  }
+}
