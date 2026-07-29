@@ -1,0 +1,233 @@
+# =====================================================
+# GraphQL Mutations Examples
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Simple Create Mutation
+# -----------------------------------------------------
+
+mutation {
+  createAccount(
+    name: "OpenAI"
+    industry: "Technology"
+  ) {
+    id
+    name
+    industry
+  }
+}
+
+# -----------------------------------------------------
+# 2. Create Mutation Using Variables
+# -----------------------------------------------------
+
+mutation CreateAccount($name: String!, $industry: String!) {
+  createAccount(
+    name: $name
+    industry: $industry
+  ) {
+    id
+    name
+    industry
+  }
+}
+
+# Variables
+#
+# {
+#   "name": "OpenAI",
+#   "industry": "Technology"
+# }
+
+# -----------------------------------------------------
+# 3. Create Using Input Object
+# -----------------------------------------------------
+
+mutation CreateAccount($input: AccountInput!) {
+  createAccount(input: $input) {
+    id
+    name
+    industry
+  }
+}
+
+# Variables
+#
+# {
+#   "input": {
+#     "name": "OpenAI",
+#     "industry": "Technology",
+#     "phone": "1234567890"
+#   }
+# }
+
+# -----------------------------------------------------
+# 4. Update Mutation
+# -----------------------------------------------------
+
+mutation UpdateAccount($id: ID!, $phone: String!) {
+  updateAccount(
+    id: $id
+    phone: $phone
+  ) {
+    id
+    name
+    phone
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001",
+#   "phone": "9876543210"
+# }
+
+# -----------------------------------------------------
+# 5. Delete Mutation
+# -----------------------------------------------------
+
+mutation DeleteAccount($id: ID!) {
+  deleteAccount(id: $id) {
+    success
+    message
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001"
+# }
+
+# -----------------------------------------------------
+# 6. Multiple Mutations
+# -----------------------------------------------------
+
+mutation {
+
+  createDepartment(name: "Engineering") {
+    id
+    name
+  }
+
+  createEmployee(
+    name: "John Doe"
+    department: "Engineering"
+  ) {
+    id
+    name
+  }
+}
+
+# -----------------------------------------------------
+# 7. Update Multiple Fields
+# -----------------------------------------------------
+
+mutation UpdateUser(
+  $id: ID!
+  $email: String!
+  $phone: String!
+) {
+  updateUser(
+    id: $id
+    email: $email
+    phone: $phone
+  ) {
+    id
+    name
+    email
+    phone
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "100",
+#   "email": "john@example.com",
+#   "phone": "5551234567"
+# }
+
+# -----------------------------------------------------
+# 8. Product Example
+# -----------------------------------------------------
+
+mutation CreateProduct($input: ProductInput!) {
+  createProduct(input: $input) {
+    id
+    name
+    price
+    stock
+  }
+}
+
+# Variables
+#
+# {
+#   "input": {
+#     "name": "Laptop",
+#     "price": 999.99,
+#     "stock": 50
+#   }
+# }
+
+# -----------------------------------------------------
+# 9. Salesforce Example
+# -----------------------------------------------------
+
+mutation CreateAccount($input: AccountInput!) {
+  createAccount(input: $input) {
+    id
+    name
+    industry
+    phone
+  }
+}
+
+# Variables
+#
+# {
+#   "input": {
+#     "name": "Acme Corporation",
+#     "industry": "Manufacturing",
+#     "phone": "5559876543"
+#   }
+# }
+
+# -----------------------------------------------------
+# 10. Complete Example
+# -----------------------------------------------------
+
+mutation CreateContact(
+  $accountId: ID!
+  $firstName: String!
+  $lastName: String!
+  $email: String!
+) {
+  createContact(
+    accountId: $accountId
+    firstName: $firstName
+    lastName: $lastName
+    email: $email
+  ) {
+    id
+    firstName
+    lastName
+    email
+
+    account {
+      id
+      name
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "accountId": "001XXXXXXXXXXXX",
+#   "firstName": "John",
+#   "lastName": "Doe",
+#   "email": "john.doe@example.com"
+# }
