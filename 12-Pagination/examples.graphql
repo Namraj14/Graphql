@@ -1,0 +1,298 @@
+# =====================================================
+# GraphQL Pagination Examples
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Offset Pagination
+# -----------------------------------------------------
+
+query {
+  accounts(
+    limit: 10
+    offset: 0
+  ) {
+    id
+    name
+    industry
+  }
+}
+
+# -----------------------------------------------------
+# 2. Offset Pagination - Second Page
+# -----------------------------------------------------
+
+query {
+  accounts(
+    limit: 10
+    offset: 10
+  ) {
+    id
+    name
+  }
+}
+
+# -----------------------------------------------------
+# 3. Forward Cursor Pagination
+# -----------------------------------------------------
+
+query {
+  accounts(
+    first: 10
+    after: "cursor123"
+  ) {
+    edges {
+      cursor
+
+      node {
+        id
+        name
+        industry
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 4. Backward Cursor Pagination
+# -----------------------------------------------------
+
+query {
+  accounts(
+    last: 10
+    before: "cursor456"
+  ) {
+    edges {
+      cursor
+
+      node {
+        id
+        name
+      }
+    }
+
+    pageInfo {
+      hasPreviousPage
+      startCursor
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 5. Using Variables
+# -----------------------------------------------------
+
+query GetAccounts(
+  $first: Int!
+  $after: String
+) {
+  accounts(
+    first: $first
+    after: $after
+  ) {
+    edges {
+      cursor
+
+      node {
+        id
+        name
+        industry
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "first": 10,
+#   "after": null
+# }
+
+# -----------------------------------------------------
+# 6. Relay Connection Pattern
+# -----------------------------------------------------
+
+query {
+  users(first: 5) {
+
+    edges {
+
+      cursor
+
+      node {
+        id
+        name
+        email
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 7. Pagination with Nested Objects
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+
+    name
+
+    contacts(first: 5) {
+
+      edges {
+
+        cursor
+
+        node {
+          firstName
+          lastName
+          email
+        }
+      }
+
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 8. Salesforce Example
+# -----------------------------------------------------
+
+query GetAccounts(
+  $first: Int!
+  $after: String
+) {
+  accounts(
+    first: $first
+    after: $after
+  ) {
+    edges {
+
+      cursor
+
+      node {
+        id
+        name
+        industry
+
+        owner {
+          name
+        }
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "first": 20,
+#   "after": null
+# }
+
+# -----------------------------------------------------
+# 9. Large Dataset Navigation
+# -----------------------------------------------------
+
+query GetProducts(
+  $first: Int!
+  $after: String
+) {
+  products(
+    first: $first
+    after: $after
+  ) {
+    edges {
+      cursor
+
+      node {
+        id
+        name
+        price
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "first": 50,
+#   "after": "YXJyYXljb25uZWN0aW9uOjQ5"
+# }
+
+# -----------------------------------------------------
+# 10. Complete Example
+# -----------------------------------------------------
+
+query GetOrders(
+  $first: Int!
+  $after: String
+) {
+  orders(
+    first: $first
+    after: $after
+  ) {
+
+    edges {
+
+      cursor
+
+      node {
+        id
+        orderNumber
+        totalAmount
+        status
+
+        customer {
+          name
+        }
+      }
+    }
+
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "first": 25,
+#   "after": null
+# }
