@@ -1,0 +1,166 @@
+# =====================================================
+# GraphQL Aliases Examples
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Simple Alias
+# -----------------------------------------------------
+
+query {
+  company: account(id: "001") {
+    name
+  }
+}
+
+# -----------------------------------------------------
+# 2. Two Accounts Using Aliases
+# -----------------------------------------------------
+
+query {
+  firstAccount: account(id: "001") {
+    name
+    industry
+  }
+
+  secondAccount: account(id: "002") {
+    name
+    industry
+  }
+}
+
+# -----------------------------------------------------
+# 3. Renaming Fields
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+    companyName: name
+    companyPhone: phone
+    companyWebsite: website
+  }
+}
+
+# -----------------------------------------------------
+# 4. Alias with Nested Object
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+    accountOwner: owner {
+      ownerName: name
+      ownerEmail: email
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 5. Multiple Levels of Aliases
+# -----------------------------------------------------
+
+query {
+  company: account(id: "001") {
+    accountName: name
+
+    ownerInfo: owner {
+      fullName: name
+
+      managerInfo: manager {
+        managerName: name
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 6. Alias with Different Arguments
+# -----------------------------------------------------
+
+query {
+  topFive: products(limit: 5) {
+    name
+    price
+  }
+
+  topTen: products(limit: 10) {
+    name
+    price
+  }
+}
+
+# -----------------------------------------------------
+# 7. Alias on Nested Lists
+# -----------------------------------------------------
+
+query {
+  account(id: "001") {
+    recentContacts: contacts(limit: 5) {
+      firstName
+      lastName
+    }
+
+    allContacts: contacts(limit: 20) {
+      firstName
+      lastName
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 8. Dashboard Comparison
+# -----------------------------------------------------
+
+query {
+  employee: user(id: "100") {
+    name
+    email
+  }
+
+  manager: user(id: "200") {
+    name
+    email
+  }
+}
+
+# -----------------------------------------------------
+# 9. Salesforce Example
+# -----------------------------------------------------
+
+query {
+  currentCustomer: account(id: "001XXXXXXXXXXXX") {
+    name
+    industry
+
+    accountOwner: owner {
+      name
+      email
+    }
+  }
+
+  previousCustomer: account(id: "001YYYYYYYYYYYY") {
+    name
+    industry
+
+    accountOwner: owner {
+      name
+      email
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 10. E-commerce Example
+# -----------------------------------------------------
+
+query {
+  featuredProducts: products(limit: 5) {
+    id
+    name
+    price
+  }
+
+  newestProducts: products(limit: 10) {
+    id
+    name
+    price
+  }
+}
