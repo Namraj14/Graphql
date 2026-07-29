@@ -1,0 +1,175 @@
+# ============================================
+# GraphQL Fields Examples
+# ============================================
+
+# --------------------------------------------
+# 1. Request a Single Field
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+  }
+}
+
+# --------------------------------------------
+# 2. Request Multiple Scalar Fields
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    id
+    name
+    industry
+    phone
+    website
+  }
+}
+
+# --------------------------------------------
+# 3. Nested Object Field
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+
+    owner {
+      name
+      email
+    }
+  }
+}
+
+# --------------------------------------------
+# 4. Deeply Nested Fields
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+
+    owner {
+      name
+
+      manager {
+        name
+
+        department {
+          name
+        }
+      }
+    }
+  }
+}
+
+# --------------------------------------------
+# 5. Field with Arguments
+# --------------------------------------------
+
+query {
+  product(id: "P100") {
+    name
+    price
+  }
+}
+
+# --------------------------------------------
+# 6. Multiple Root Fields
+# --------------------------------------------
+
+query {
+  accounts {
+    name
+  }
+
+  contacts {
+    firstName
+    lastName
+    email
+  }
+}
+
+# --------------------------------------------
+# 7. Alias Example
+# --------------------------------------------
+
+query {
+  primaryAccount: account(id: "001") {
+    name
+  }
+
+  secondaryAccount: account(id: "002") {
+    name
+  }
+}
+
+# --------------------------------------------
+# 8. Alias for a Field
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    companyName: name
+    companyPhone: phone
+  }
+}
+
+# --------------------------------------------
+# 9. Directive on a Field
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+    phone @include(if: true)
+  }
+}
+
+# --------------------------------------------
+# 10. Request Only Required Fields
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    name
+    industry
+  }
+}
+
+# --------------------------------------------
+# 11. Object Field with Selection Set
+# --------------------------------------------
+
+query {
+  account(id: "001") {
+    owner {
+      id
+      name
+      email
+      title
+    }
+  }
+}
+
+# --------------------------------------------
+# 12. Complex Example
+# --------------------------------------------
+
+query GetAccount {
+  account(id: "001") {
+    id
+    name
+    industry
+
+    owner {
+      id
+      name
+      email
+
+      manager {
+        name
+      }
+    }
+  }
+}
