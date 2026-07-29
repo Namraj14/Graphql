@@ -1,0 +1,30 @@
+<template>
+
+    <lightning-card title="Account Details">
+
+        <template if:true={account}>
+
+            <p><strong>Name:</strong> {account.Name.value}</p>
+
+            <p><strong>Industry:</strong> {account.Industry.value}</p>
+            <p><strong>Phone:</strong> {account.Phone.value}</p>
+
+            <p><strong>Owner:</strong>
+                {account.Owner.Name.value}
+            </p>
+
+        </template>
+
+        <template if:true={errors}>
+
+            <p class="slds-text-color_error">
+
+                Unable to load Account.
+
+            </p>
+
+        </template>
+
+    </lightning-card>
+
+</template>
