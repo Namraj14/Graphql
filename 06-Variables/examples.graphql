@@ -1,0 +1,215 @@
+# ==================================================
+# GraphQL Variables Examples
+# ==================================================
+
+# --------------------------------------------------
+# 1. Simple Variable
+# --------------------------------------------------
+
+query GetAccount($id: ID!) {
+  account(id: $id) {
+    id
+    name
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001"
+# }
+
+# --------------------------------------------------
+# 2. Multiple Variables
+# --------------------------------------------------
+
+query SearchUsers(
+  $department: String!
+  $active: Boolean!
+) {
+  users(
+    department: $department
+    active: $active
+  ) {
+    id
+    name
+    email
+  }
+}
+
+# Variables
+#
+# {
+#   "department": "Sales",
+#   "active": true
+# }
+
+# --------------------------------------------------
+# 3. Optional Variable
+# --------------------------------------------------
+
+query SearchUsers($department: String) {
+  users(department: $department) {
+    id
+    name
+  }
+}
+
+# Variables
+#
+# {
+#   "department": "Engineering"
+# }
+
+# --------------------------------------------------
+# 4. Variable with Default Value
+# --------------------------------------------------
+
+query GetAccount($id: ID = "001") {
+  account(id: $id) {
+    id
+    name
+  }
+}
+
+# --------------------------------------------------
+# 5. List Variable
+# --------------------------------------------------
+
+query GetUsers($ids: [ID!]!) {
+  users(ids: $ids) {
+    id
+    name
+  }
+}
+
+# Variables
+#
+# {
+#   "ids": ["101", "102", "103"]
+# }
+
+# --------------------------------------------------
+# 6. Input Object Variable
+# --------------------------------------------------
+
+query SearchUsers($filter: UserFilter) {
+  users(filter: $filter) {
+    id
+    name
+    email
+  }
+}
+
+# Variables
+#
+# {
+#   "filter": {
+#     "department": "Sales",
+#     "active": true
+#   }
+# }
+
+# --------------------------------------------------
+# 7. Variable Used in Nested Query
+# --------------------------------------------------
+
+query GetAccount($id: ID!) {
+  account(id: $id) {
+    name
+
+    contacts(first: 5) {
+      firstName
+      lastName
+      email
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001"
+# }
+
+# --------------------------------------------------
+# 8. Mutation with Variables
+# --------------------------------------------------
+
+mutation CreateAccount(
+  $name: String!
+  $industry: String!
+) {
+  createAccount(
+    name: $name
+    industry: $industry
+  ) {
+    id
+    name
+    industry
+  }
+}
+
+# Variables
+#
+# {
+#   "name": "OpenAI",
+#   "industry": "Technology"
+# }
+
+# --------------------------------------------------
+# 9. Complex Example
+# --------------------------------------------------
+
+query SearchAccounts(
+  $industry: String!
+  $active: Boolean!
+  $limit: Int!
+) {
+  accounts(
+    industry: $industry
+    active: $active
+    first: $limit
+  ) {
+    id
+    name
+    industry
+  }
+}
+
+# Variables
+#
+# {
+#   "industry": "Technology",
+#   "active": true,
+#   "limit": 10
+# }
+
+# --------------------------------------------------
+# 10. Salesforce Example
+# --------------------------------------------------
+
+query GetAccountDetails($accountId: ID!) {
+  account(id: $accountId) {
+    id
+    name
+    industry
+
+    owner {
+      name
+      email
+    }
+
+    contacts(first: 5) {
+      firstName
+      lastName
+      email
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "accountId": "001XXXXXXXXXXXX"
+# }
