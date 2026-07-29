@@ -1,0 +1,217 @@
+# =====================================================
+# GraphQL Fragments Examples
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Basic Fragment
+# -----------------------------------------------------
+
+fragment AccountFields on Account {
+  id
+  name
+  industry
+  phone
+}
+
+query {
+  account(id: "001") {
+    ...AccountFields
+  }
+}
+
+# -----------------------------------------------------
+# 2. Reusing the Same Fragment
+# -----------------------------------------------------
+
+fragment UserFields on User {
+  id
+  name
+  email
+}
+
+query {
+  employee(id: "100") {
+    ...UserFields
+  }
+
+  manager(id: "200") {
+    ...UserFields
+  }
+}
+
+# -----------------------------------------------------
+# 3. Nested Fragments
+# -----------------------------------------------------
+
+fragment ContactFields on Contact {
+  email
+  phone
+}
+
+fragment UserDetails on User {
+  id
+  name
+  ...ContactFields
+}
+
+query {
+  user(id: "100") {
+    ...UserDetails
+  }
+}
+
+# -----------------------------------------------------
+# 4. Multiple Fragments
+# -----------------------------------------------------
+
+fragment BasicInfo on User {
+  id
+  name
+}
+
+fragment ContactInfo on User {
+  email
+  phone
+}
+
+query {
+  user(id: "100") {
+    ...BasicInfo
+    ...ContactInfo
+  }
+}
+
+# -----------------------------------------------------
+# 5. Inline Fragment
+# -----------------------------------------------------
+
+query {
+  search(text: "John") {
+
+    ... on User {
+      name
+      email
+    }
+
+    ... on Company {
+      companyName
+      industry
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 6. Interface Example
+# -----------------------------------------------------
+
+query {
+  people {
+
+    ... on Employee {
+      salary
+    }
+
+    ... on Customer {
+      loyaltyPoints
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 7. Union Type Example
+# -----------------------------------------------------
+
+query {
+  search(keyword: "Laptop") {
+
+    ... on Product {
+      name
+      price
+    }
+
+    ... on Company {
+      companyName
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 8. Account with Nested Fragment
+# -----------------------------------------------------
+
+fragment OwnerFields on User {
+  id
+  name
+  email
+}
+
+fragment AccountInfo on Account {
+  id
+  name
+  industry
+
+  owner {
+    ...OwnerFields
+  }
+}
+
+query {
+  account(id: "001") {
+    ...AccountInfo
+  }
+}
+
+# -----------------------------------------------------
+# 9. Salesforce Example
+# -----------------------------------------------------
+
+fragment AccountDetails on Account {
+  id
+  name
+  industry
+  billingCity
+
+  owner {
+    name
+    email
+  }
+}
+
+query GetAccount($id: ID!) {
+  account(id: $id) {
+    ...AccountDetails
+  }
+}
+
+# Variables
+#
+# {
+#   "id": "001XXXXXXXXXXXX"
+# }
+
+# -----------------------------------------------------
+# 10. Complete Example
+# -----------------------------------------------------
+
+fragment AddressFields on Address {
+  street
+  city
+  state
+  country
+}
+
+fragment CustomerFields on Customer {
+  id
+  name
+  email
+
+  address {
+    ...AddressFields
+  }
+}
+
+query {
+  customer(id: "C101") {
+    ...CustomerFields
+  }
+}
