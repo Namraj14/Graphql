@@ -1,0 +1,167 @@
+# =====================================================
+# Salesforce GraphQL - Contact Queries
+# =====================================================
+
+# -----------------------------------------------------
+# 1. Get Contacts
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Contact(first:10){
+
+        edges{
+
+          node{
+
+            Id
+
+            FirstName{
+              value
+            }
+
+            LastName{
+              value
+            }
+
+            Email{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 2. Contact with Account
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Contact(first:5){
+
+        edges{
+
+          node{
+
+            FirstName{
+              value
+            }
+
+            LastName{
+              value
+            }
+
+            Account{
+
+              Name{
+                value
+              }
+
+              Industry{
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 3. Filter Contacts
+# -----------------------------------------------------
+
+query{
+
+  uiapi{
+
+    query{
+
+      Contact(
+
+        where:{
+          LastName:{
+            like:"S%"
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            FirstName{
+              value
+            }
+
+            LastName{
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# -----------------------------------------------------
+# 4. Contact by Email
+# -----------------------------------------------------
+
+query GetContact($email:String!){
+
+  uiapi{
+
+    query{
+
+      Contact(
+
+        where:{
+          Email:{
+            eq:$email
+          }
+        }
+
+      ){
+
+        edges{
+
+          node{
+
+            Id
+
+            Email{
+              value
+            }
+
+            Account{
+
+              Name{
+                value
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+# Variables
+#
+# {
+#   "email":"john@example.com"
+# }
