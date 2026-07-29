@@ -1,0 +1,63 @@
+# =====================================================
+# Customer Search
+# =====================================================
+
+query SearchCustomers(
+  $search: String!
+  $first: Int!
+) {
+
+  customers(
+
+    search: $search
+
+    first: $first
+
+  ) {
+
+    edges {
+
+      cursor
+
+      node {
+
+        id
+
+        firstName
+
+        lastName
+
+        email
+
+        phone
+
+        company {
+
+          id
+
+          name
+
+        }
+
+      }
+
+    }
+
+    pageInfo {
+
+      hasNextPage
+
+      endCursor
+
+    }
+
+  }
+
+}
+
+# Variables
+#
+# {
+#   "search": "John",
+#   "first": 10
+# }
