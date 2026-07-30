@@ -51,6 +51,17 @@ Account Connection
 └── edge
       ├── cursor
       └── node
+
+edge
+│
+├── cursor
+└── node
+      │
+      ├── Id
+      ├── Name
+      ├── Industry
+      └── Phone
+
 Now let's visualize what happens internally.
 
 You Write Query
