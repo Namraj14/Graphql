@@ -38,7 +38,19 @@ query {                    ← GraphQL operation (READ data). Similar to a SOQL 
   }
 
 }
-
+Account Connection
+│
+├── edge
+│     ├── cursor   ← Pagination information
+│     └── node     ← Actual Account record
+│
+├── edge
+│     ├── cursor
+│     └── node
+│
+└── edge
+      ├── cursor
+      └── node
 Now let's visualize what happens internally.
 
 You Write Query
