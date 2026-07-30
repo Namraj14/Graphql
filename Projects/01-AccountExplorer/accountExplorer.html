@@ -14,3 +14,351 @@
         </template>
     </lightning-card>
 </template>
+
+
+Note:
+# Common Mistakes While Using `lightning-datatable` with Salesforce GraphQL
+
+## Scenario
+
+Suppose your GraphQL response has already been transformed into the following array:
+
+```javascript
+this.accounts = [
+    {
+        id: "001",
+        name: "Acme",
+        industry: "Technology"
+    },
+    {
+        id: "002",
+        name: "Salesforce",
+        industry: "Software"
+    }
+];
+```
+
+Our goal is to display these records in a `lightning-datatable`.
+
+---
+
+# ❌ Mistake 1: Using `for:each` with `lightning-datatable`
+
+### Incorrect
+
+```html
+<template for:each={accounts} for:item="account">
+
+    <lightning-datatable
+        key-field="id"
+        data={account}
+        columns={columns}>
+    </lightning-datatable>
+
+</template>
+```
+
+### Why is this wrong?
+
+The `lightning-datatable` component is designed to display **multiple rows by itself**.
+
+Using `for:each` creates **one datatable for every record**, which is unnecessary.
+
+### What happens?
+
+```
+Datatable 1
+------------
+Acme
+
+Datatable 2
+------------
+Salesforce
+
+Datatable 3
+------------
+Google
+```
+
+Instead of one table with multiple rows, you end up with multiple separate tables.
+
+### Correct
+
+```html
+<lightning-datatable
+    key-field="id"
+    data={accounts}
+    columns={columns}>
+</lightning-datatable>
+```
+
+---
+
+# ❌ Mistake 2: Passing a Single Object to `data`
+
+### Incorrect
+
+```html
+data={account}
+```
+
+### Why is this wrong?
+
+`account` is a single JavaScript object.
+
+Example:
+
+```javascript
+{
+    id: "001",
+    name: "Acme",
+    industry: "Technology"
+}
+```
+
+However, `lightning-datatable` expects an **array of objects**.
+
+Expected format:
+
+```javascript
+[
+    {
+        id: "001",
+        name: "Acme",
+        industry: "Technology"
+    },
+    {
+        id: "002",
+        name: "Salesforce",
+        industry: "Software"
+    }
+]
+```
+
+### Correct
+
+```html
+data={accounts}
+```
+
+---
+
+# ❌ Mistake 3: Incorrect `key-field`
+
+### Incorrect
+
+```html
+key-field={account.id}
+```
+
+### Why is this wrong?
+
+`key-field` expects the **field name**, not the field value.
+
+You are passing the actual value of the ID instead of telling Salesforce which property contains the unique identifier.
+
+### Correct
+
+```html
+key-field="id"
+```
+
+Salesforce automatically uses:
+
+```javascript
+row.id
+```
+
+for every row.
+
+---
+
+# ❌ Mistake 4: Not Flattening the GraphQL Response
+
+GraphQL returns data in this structure:
+
+```javascript
+{
+    node: {
+        Id: "001",
+        Name: {
+            value: "Acme"
+        },
+        Industry: {
+            value: "Technology"
+        }
+    }
+}
+```
+
+Many beginners try to use this directly in the datatable.
+
+Example:
+
+```javascript
+this.accounts = data.uiapi.query.Account.edges;
+```
+
+This makes each row look like:
+
+```javascript
+{
+    node: {
+        Id: "...",
+        Name: {
+            value: "Acme"
+        }
+    }
+}
+```
+
+Now you might try:
+
+```javascript
+fieldName: "node.Name.value"
+```
+
+This **does not work** because `lightning-datatable` expects simple property names.
+
+### Correct Approach
+
+Flatten the response first.
+
+```javascript
+this.accounts = data.uiapi.query.Account.edges.map(edge => {
+    return {
+        id: edge.node.Id,
+        name: edge.node.Name?.value,
+        industry: edge.node.Industry?.value
+    };
+});
+```
+
+Now every object becomes:
+
+```javascript
+{
+    id: "001",
+    name: "Acme",
+    industry: "Technology"
+}
+```
+
+The datatable can easily use:
+
+```javascript
+fieldName: "name"
+fieldName: "industry"
+```
+
+---
+
+# Correct HTML
+
+```html
+<template>
+
+    <lightning-card title="Account Explorer">
+
+        <template if:true={accounts}>
+
+            <lightning-datatable
+                key-field="id"
+                data={accounts}
+                columns={columns}>
+            </lightning-datatable>
+
+        </template>
+
+        <template if:true={error}>
+            <div>Something went wrong.</div>
+        </template>
+
+    </lightning-card>
+
+</template>
+```
+
+---
+
+# Visual Comparison
+
+## ❌ Incorrect Approach
+
+```
+accounts
+│
+├── Account 1
+│      ↓
+│   Datatable
+│
+├── Account 2
+│      ↓
+│   Datatable
+│
+└── Account 3
+       ↓
+    Datatable
+```
+
+Creates multiple datatables.
+
+---
+
+## ✅ Correct Approach
+
+```
+accounts
+│
+├── Account 1
+├── Account 2
+├── Account 3
+│
+▼
+One lightning-datatable
+```
+
+Creates one datatable with multiple rows.
+
+---
+
+# Key Takeaways
+
+* `lightning-datatable` automatically iterates over the records.
+* Never wrap a datatable inside a `for:each`.
+* Always pass an **array** to the `data` attribute.
+* `key-field` should contain the **field name**, not the field value.
+* Flatten the GraphQL response before binding it to the datatable.
+* Keep the data structure simple (`id`, `name`, `industry`) for easier rendering and maintenance.
+
+---
+
+# Best Practice Workflow
+
+```
+GraphQL Query
+      │
+      ▼
+Wire Adapter
+      │
+      ▼
+GraphQL Response (edges/node)
+      │
+      ▼
+map()
+      │
+      ▼
+Flatten the Data
+      │
+      ▼
+[
+    {
+        id: "...",
+        name: "...",
+        industry: "..."
+    }
+]
+      │
+      ▼
+lightning-datatable
+```
