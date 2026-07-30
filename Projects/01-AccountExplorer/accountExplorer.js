@@ -5,7 +5,7 @@ const ACCOUNT_QUERY = gql`
 query{
     uiapi{
         query{
-            Account {
+            Account(first:5) {
                 edges {
                     node {
                         Id
@@ -43,6 +43,17 @@ export default class AccountExplorer extends LightningElement {
     @wire(graphql,{
         query: ACCOUNT_QUERY
     })
+    /*wiredAccounts({ data, errors }) {
+    if (data) {
+        this.accounts = data.uiapi.query.Account.edges.map(edge => ({
+            id: edge.node.Id,
+            name: edge.node.Name?.value,
+            industry: edge.node.Industry?.value
+        }));
+
+        this.error = undefined;
+    }
+}Notice the parentheses () around the object. They're needed so JavaScript knows you're returning an object literal. */
     wiredAccounts({ data, errors }) {
         if (data) {
             this.accounts = data.uiapi.query.Account.edges.map(edge => {
