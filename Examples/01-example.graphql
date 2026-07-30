@@ -38,3 +38,105 @@ query {                    ← GraphQL operation (READ data). Similar to a SOQL 
   }
 
 }
+
+Now let's visualize what happens internally.
+
+You Write Query
+       │
+       ▼
+query
+       │
+       ▼
+"I want to READ data."
+       │
+       ▼
+uiapi
+       │
+       ▼
+"Use Salesforce UI API"
+       │
+       ▼
+query
+       │
+       ▼
+"I want to query Salesforce records"
+       │
+       ▼
+Account(first:5)
+       │
+       ▼
+"Give me the first 5 Account records"
+       │
+       ▼
+edges
+       │
+       ▼
+Result Collection
+ ├── Edge 1
+ ├── Edge 2
+ ├── Edge 3
+ ├── Edge 4
+ └── Edge 5
+       │
+       ▼
+node
+       │
+       ▼
+Actual Salesforce Record
+       │
+       ├── Id
+       │
+       └── Name
+             │
+             └── value
+
+
+Account(first:5)
+        │
+        ▼
++----------------------------------+
+|           Connection             |
+|                                  |
+|   edges                          |
+|     │                            |
+|     ├───────────────┐            |
+|     │               │            |
+|   node            node           |
+|     │               │            |
+|  Account 1      Account 2        |
+|     │               │            |
+|  Id              Id              |
+|  Name            Name            |
+|   │               │              |
+| value           value            |
++----------------------------------+
+
+Expected Response
+{
+  "data": {
+    "uiapi": {
+      "query": {
+        "Account": {
+          "edges": [
+            {
+              "node": {
+                "Id": "001XXXXXXXXXXXX",
+                "Name": {
+                  "value": "Acme Corporation"
+                }
+              }
+            },
+            {
+              "node": {
+                "Id": "001YYYYYYYYYYYY",
+                "Name": {
+                  "value": "Global Tech"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
